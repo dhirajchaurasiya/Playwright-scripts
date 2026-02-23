@@ -23,7 +23,8 @@ test("Comparing methods ", async({page})=>{
     // await page.waitForTimeout(5000);
 
 
-    // 2) allinnertext vs alltextcontent
+    // 2) allinnertext vs alltextcontent (they both work for group elements)
+    //that is why we need to use map function to trim the text content and remove spaces and line breaks.
 
     console.log("Comparing allinnertext vs alltextcontent");
     
@@ -31,6 +32,27 @@ test("Comparing methods ", async({page})=>{
     const allTextContent: string[] = await products.allTextContents();
 
     const productnametrimmed: string[] = allTextContent.map(text => text.trim());
-    console.log(productnametrimmed);
+    console.log("productnametrimmed:", productnametrimmed);
+
+
+    // 3) All() - converts locator to array of locators and we can perform actions on individual locators.
+    const productsLocators: Locator[] = await products.all();
+    console.log("productsLocators:", productsLocators);
+
+    // console.log(await productsLocators[0].innerText());
+
+    //since now the locators are in array we can use "for of" loop to iterate through them and perform actions on individual locators.
+
+    for(let productlocator of productsLocators){
+        console.log(await productlocator.innerText());     
+    }
+
+
+    //for in loop
+    for(let index in productsLocators){
+        console.log(await productsLocators[index].innerText());     
+    }
+
+    
      
 });
